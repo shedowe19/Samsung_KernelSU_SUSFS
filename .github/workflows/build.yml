@@ -111,14 +111,17 @@ jobs:
           # Fix SUSFS rejects
           if [[ "${{ inputs.branch }}" == "SM-S928B-Oneui7" || "${{ inputs.branch }}" == "SM-S928B-Oneui8" ]]; then
             cp ../../../kernel_patches/samsung/S24U/* ./
+            patch -p1 < fix_namespace.patch
+            patch -p1 < fix_base.patch
           elif [[ "${{ inputs.branch }}" == "SM-A366B" ]]; then
             cp ../../../kernel_patches/samsung/${{ inputs.branch }}/* ./
+            patch -p1 < A36fix_namespace.patch
+            patch -p1 < A36fix_base.patch
+            patch -p1 < A36fix_taskmmu.patch
           elif [[ "${{ inputs.branch }}" == "SM-A546B" ]]; then
             cp ../../../kernel_patches/samsung/${{ inputs.branch }}/* ./
           fi
           
-          patch -p1 < fix_namespace.patch
-          patch -p1 < fix_base.patch
 
           # Post-SUSFS sed safeguards for task_mmu.c 'goto show_pad' handling
           #if ( ( [[ "${{ inputs.android_version }}" == "android12" ]] && [[ "${{ inputs.kernel_version }}" == "5.10" ]] && (( $ACTUAL_SUBLEVEL <= 209 )) ) \
@@ -230,13 +233,21 @@ jobs:
       - name: Prepare AnyKernel3
         run: |
           # Copy Image from normal build locations
-          if [ -f "./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image" ]; then
-            cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image AnyKernel3/Image
-          elif [ -f "./$CONFIG/bazel-bin/common/kernel_aarch64/Image" ]; then
-            cp ./$CONFIG/bazel-bin/common/kernel_aarch64/Image AnyKernel3/Image
-          else
-            echo "Error: Image file not found in any expected location"
-            exit 1
+          #if [ -f "./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image" ]; then
+          #  cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image AnyKernel3/Image
+          #elif [ -f "./$CONFIG/bazel-bin/common/kernel_aarch64/Image" ]; then
+          #  cp ./$CONFIG/bazel-bin/common/kernel_aarch64/Image AnyKernel3/Image
+          #else
+          #  echo "Error: Image file not found in any expected location"
+          #  exit 1
+          #fi
+
+          if [[ "${{ inputs.branch }}" == "SM-S928B-Oneui7" || "${{ inputs.branch }}" == "SM-S928B-Oneui8" ]]; then
+            cp ./kernel_platform/sec/dist/Image AnyKernel3/
+          elif [[ "${{ inputs.branch }}" == "SM-A366B" ]]; then
+            cp ./kernel_platform/gki/dist/Image AnyKernel3
+          elif [[ "${{ inputs.branch }}" == "SM-A546B" ]]; then
+            cp ../../../kernel_patches/samsung/${{ inputs.branch }}/* ./
           fi
 
       - name: Create Bootimgs Folder and Copy Images for Android 14/15
