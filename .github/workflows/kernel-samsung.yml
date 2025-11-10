@@ -15,9 +15,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - branch: "SM-S928B-Oneui7"
-            android_version: "android14"
-            kernel_version: "6.1"
+#          - branch: "SM-S928B-Oneui7"
+#            android_version: "android14"
+#            kernel_version: "6.1"
           - branch: "SM-S928B-Oneui8"
             android_version: "android14"
             kernel_version: "6.1"
@@ -27,15 +27,15 @@ jobs:
 #          - branch: "SM-A546E"
 #            android_version: "android13"
 #            kernel_version: "5.15"
-          - branch: "SM-X916B"
-            android_version: "android13"
-            kernel_version: "5.15"
-          - branch: "SM-A366B"
-            android_version: "android15"
-            kernel_version: "6.6"
-          - branch: "SM-F946N"
-            android_version: "android13"
-            kernel_version: "5.15"
+#          - branch: "SM-X916B"
+#            android_version: "android13"
+#            kernel_version: "5.15"
+#          - branch: "SM-A366B"
+#            android_version: "android15"
+#            kernel_version: "6.6"
+#          - branch: "SM-F946N"
+#            android_version: "android13"
+#            kernel_version: "5.15"
 
     uses: ./.github/workflows/build.yml
     secrets: inherit
