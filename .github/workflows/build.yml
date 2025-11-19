@@ -72,7 +72,7 @@ jobs:
       
       - name: Clone Kernel Source
         run: |
-          git clone https://github.com/WildKernels/Samsung_Kernels.git -b ${{ inputs.branch }} $CONFIG
+          git clone https://github.com/shedowe19/android_kernel_samsung_sm8550-test.git -b ${{ inputs.branch }} $CONFIG
 
       - name: Extract all tar.xz files and delete them
         run: |
