@@ -63,6 +63,7 @@ jobs:
 
       - name: Extract all tar.xz files and delete them
         run: |
+         cd "$CONFIG"
          find . -type f -name '*.tar.xz' -print0 | while IFS= read -r -d '' file; do
           echo "Extracting $file"
           tar -xf "$file"
